@@ -5,8 +5,8 @@
     <title>New User</title>
 </head>
 <body>
-<h3>Fill in User form</h3>
-<form method="post" th:action="@{/users/save}" th:object="${user}">
+<h3 th:text="${user.id == null} ? 'Save User' : 'Edit User'" />
+<form th:action="${user.id == null} ? @{/users/save} : @{/users/update(id=${user.id})}" th:object="${user}" method="post">
     <input type="hidden" th:field="*{id}" />
     <div>
         <label for="name">Name: </label>
@@ -15,7 +15,7 @@
         <label for="email">Email: </label>
         <input type="text" th:field="*{email}" id="email"/>
         <br>
-        <input type="submit" value="Save"/>
+        <button type="submit" th:text="${user.id == null} ? 'Add' : 'Save changes'"></button>
     </div>
 </form>
 <br>

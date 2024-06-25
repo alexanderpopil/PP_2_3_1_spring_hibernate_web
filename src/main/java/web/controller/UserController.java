@@ -30,23 +30,26 @@ public class UserController {
 
     @PostMapping("/save")
     public String saveUser(@ModelAttribute("user") User user) {
-        if (user.getId() == null) {
-            userService.saveUser(user);
-        } else {
-            userService.updateUser(user);
-        }
+        userService.saveUser(user);
         return "redirect:/users";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editUserForm(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/edit")
+    public String editUserForm(@RequestParam("id") Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "form";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
+    @PostMapping("/update")
+    public String updateUser(@RequestParam("id") Long id, @ModelAttribute("user") User user) {
+        user.setId(id);
+        userService.updateUser(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/delete")
+    public String deleteUser(@RequestParam("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/users";
     }
